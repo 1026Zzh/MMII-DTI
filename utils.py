@@ -25,136 +25,61 @@ def read_file_by_json(path):
 def load_common_data(subs):
     print("Loading common dataset (about 2 minutes)...")
     # load drug and targets
-    # all_smiles = read_file('./common/case_study_target_Davis_test/all_smiles.txt')
-    # all_smiles = read_file('./common/case_study_target_Davis_train/all_smiles.txt')
-    # all_smiles = read_file('./common/case_study_drug_Davis_test/all_smiles.txt')
-    # all_smiles = read_file('./common/case_study_drug_Davis_train/all_smiles.txt')
     # all_smiles = read_file('./common/Davis/all_smiles.txt')
-    # all_smiles = read_file('./common/Human/all_smiles.txt')
-    # all_smiles = read_file('./common/celegans/all_smiles.txt')
     all_smiles = read_file('./common/KIBA/all_smiles.txt')
 
-    # all_smiles_new = read_file('./common/case_study_target_Davis_test/all_smiles_new.txt')
-    # all_smiles_new = read_file('./common/case_study_target_Davis_train/all_smiles_new.txt')
-    # all_smiles_new = read_file('./common/case_study_drug_Davis_test/all_smiles_new.txt')
-    # all_smiles_new = read_file('./common/case_study_drug_Davis_train/all_smiles_new.txt')
     # all_smiles_new = read_file('./common/Davis/all_smiles_new.txt')
-    # all_smiles_new = read_file('./common/Human/all_smiles_new.txt')
-    # all_smiles_new = read_file('./common/celegans/all_smiles_new.txt')
     all_smiles_new = read_file('./common/KIBA/all_smiles_new.txt')
 
-    # all_targets = read_file('./common/case_study_target_Davis_test/all_target.txt')
-    # all_targets = read_file('./common/case_study_target_Davis_train/all_target.txt')
-    # all_targets = read_file('./common/case_study_drug_Davis_test/all_target.txt')
-    # all_targets = read_file('./common/case_study_drug_Davis_train/all_target.txt')
+
     # all_targets = read_file('./common/Davis/all_target.txt')
-    # all_targets = read_file('./common/Human/all_target.txt')
-    # all_targets = read_file('./common/celegans/all_target.txt')
     all_targets = read_file('./common/KIBA/all_target.txt')
 
     # The features of the target.
-    # residues = read_file_by_json('./common/case_study_target_Davis_test/residues_id.txt')
-    # residues = read_file_by_json('./common/case_study_target_Davis_train/residues_id.txt')
-    # residues = read_file_by_json('./common/case_study_drug_Davis_test/residues_id.txt')
-    # residues = read_file_by_json('./common/case_study_drug_Davis_train/residues_id.txt')
     # residues = read_file_by_json('./common/Davis/residues_id.txt')  #靶标的氨基酸序列进行分解时的索引
-    # residues = read_file_by_json('./common/Human/residues_id.txt')
-    # residues = read_file_by_json('./common/celegans/residues_id.txt')
     residues = read_file_by_json('./common/KIBA/residues_id.txt')
 
     # 新增加的靶标的二级结构信息
-    # tss = read_file_by_json('./common/case_study_target_Davis_test/tss_id.txt')
-    # tss = read_file_by_json('./common/case_study_target_Davis_train/tss_id.txt')
-    # tss = read_file_by_json('./common/case_study_drug_Davis_test/tss_id.txt')
-    # tss = read_file_by_json('./common/case_study_drug_Davis_train/tss_id.txt')
     # tss = read_file_by_json('./common/Davis/tss_id.txt')  # 靶标的氨基酸序列进行分解时的索引
-    # tss = read_file_by_json('./common/Human/tss_id.txt')
-    # tss = read_file_by_json('./common/celegans/tss_id.txt')
     tss = read_file_by_json('./common/KIBA/tss_id.txt')
 
     # The features of the drug 2D substructure.
     subs = subs.upper()
     if subs == 'ICMF':
-        # substructures = read_file_by_json('./common/case_study_target_Davis_test/substructure_icmf_id.txt')
-        # substructures = read_file_by_json('./common/case_study_target_Davis_train/substructure_icmf_id.txt')
-        # substructures = read_file_by_json('./common/case_study_drug_Davis_test/substructure_icmf_id.txt')
-        # substructures = read_file_by_json('./common/case_study_drug_Davis_train/substructure_icmf_id.txt')
         # substructures = read_file_by_json('./common/Davis/substructure_icmf_id.txt')
-        # substructures = read_file_by_json('./common/Human/substructure_icmf_id.txt')
-        # substructures = read_file_by_json('./common/celegans/substructure_icmf_id.txt')
         substructures = read_file_by_json('./common/KIBA/substructure_icmf_id.txt')
     elif subs == 'ESPF':
-        # substructures = read_file_by_json('./common/case_study_target_Davis_test/substructure_espf_id.txt')
-        # substructures = read_file_by_json('./common/case_study_target_Davis_train/substructure_espf_id.txt')
-        # substructures = read_file_by_json('./common/case_study_drug_Davis_test/substructure_espf_id.txt')
-        # substructures = read_file_by_json('./common/case_study_drug_Davis_train/substructure_espf_id.txt')
         # substructures = read_file_by_json('./common/Davis/substructure_espf_id.txt')
-        # substructures = read_file_by_json('./common/Human/substructure_espf_id.txt')
-        # substructures = read_file_by_json('./common/celegans/substructure_espf_id.txt')
         substructures = read_file_by_json('./common/KIBA/substructure_espf_id.txt')
     else:
         print('The parameter of drug 2D substructure is wrong!!! (Please choose for ICMF and ESFP)')
         sys.exit(1)
 
     # 加入药物图像信息
-    # drug_img_path = "./common/case_study_target_Davis_test/image/Img_256_256/img_inf_data"
-    # drug_img_path = "./common/case_study_target_Davis_train/image/Img_256_256/img_inf_data"
-    # drug_img_path = "./common/case_study_drug_Davis_test/image/Img_256_256/img_inf_data"
-    # drug_img_path = "./common/case_study_drug_Davis_train/image/Img_256_256/img_inf_data"
     # drug_img_path = "./common/Davis/image/Img_256_256/img_inf_data"
-    # drug_img_path = "./common/Human/image/Img_256_256/img_inf_data"
-    # drug_img_path = "./common/celegans/image/Img_256_256/img_inf_data"
     drug_img_path = "./common/KIBA/image/Img_256_256/img_inf_data"
 
     # 得到药物图像路径
     drug_image = get_img_path(drug_img_path)
 
     # 加入药物文本信息
-    # druggram = read_file_by_json('./common/case_study_target_Davis_test/Davis_smiles_1_gram.txt')
-    # druggram = read_file_by_json('./common/case_study_target_Davis_train/Davis_smiles_1_gram.txt')
-    # druggram = read_file_by_json('./common/case_study_drug_Davis_test/Davis_smiles_1_gram.txt')
-    # druggram = read_file_by_json('./common/case_study_drug_Davis_train/Davis_smiles_1_gram.txt')
     # druggram = read_file_by_json('./common/Davis/Davis_smiles_1_gram.txt')
-    # druggram = read_file_by_json('./common/Human/human_smiles_3_gram.txt')
-    # druggram = read_file_by_json('./common/celegans/celegans_smiles_3_gram.txt')
     druggram = read_file_by_json('./common/KIBA/KIBA_smiles_1_gram.txt')
 
 
     # The features of the drug 3D.
-    # skeletons = read_file_by_json('./common/case_study_target_Davis_test/skeletons_id.txt')
-    # skeletons = read_file_by_json('./common/case_study_target_Davis_train/skeletons_id.txt')
-    # skeletons = read_file_by_json('./common/case_study_drug_Davis_test/skeletons_id.txt')
-    # skeletons = read_file_by_json('./common/case_study_drug_Davis_train/skeletons_id.txt')
     # skeletons = read_file_by_json('./common/Davis/skeletons_id.txt') #药物的骨架
-    # skeletons = read_file_by_json('./common/Human/skeletons_id.txt')
-    # skeletons = read_file_by_json('./common/celegans/skeletons_id.txt')
     skeletons = read_file_by_json('./common/KIBA/skeletons_id.txt')
 
-    # mols = list(Chem.SDMolSupplier('./common/case_study_target_Davis_test/all_mols.sdf'))
-    # mols = list(Chem.SDMolSupplier('./common/case_study_target_Davis_train/all_mols.sdf'))
-    # mols = list(Chem.SDMolSupplier('./common/case_study_drug_Davis_test/all_mols.sdf'))
-    # mols = list(Chem.SDMolSupplier('./common/case_study_drug_Davis_train/all_mols.sdf'))
+
     # mols = list(Chem.SDMolSupplier('./common/Davis/all_mols.sdf')) #SMILES表示的分子转化为具有三维坐标的分子
-    # mols = list(Chem.SDMolSupplier('./common/Human/all_mols.sdf'))
-    # mols = list(Chem.SDMolSupplier('./common/celegans/all_mols.sdf'))
     mols = list(Chem.SDMolSupplier('./common/KIBA/all_mols.sdf'))
 
-    # atoms_idx = read_file_by_json('./common/case_study_target_Davis_test/atoms_idx.txt')
-    # atoms_idx = read_file_by_json('./common/case_study_target_Davis_train/atoms_idx.txt')
-    # atoms_idx = read_file_by_json('./common/case_study_drug_Davis_test/atoms_idx.txt')
-    # atoms_idx = read_file_by_json('./common/case_study_drug_Davis_train/atoms_idx.txt')
     # atoms_idx = read_file_by_json('./common/Davis/atoms_idx.txt') #药物中原子的索引
-    # atoms_idx = read_file_by_json('./common/Human/atoms_idx.txt')
-    # atoms_idx = read_file_by_json('./common/celegans/atoms_idx.txt')
     atoms_idx = read_file_by_json('./common/KIBA/atoms_idx.txt')
 
-    # marks = read_file_by_json('./common/case_study_target_Davis_test/marks.txt')
-    # marks = read_file_by_json('./common/case_study_target_Davis_train/marks.txt')
-    # marks = read_file_by_json('./common/case_study_drug_Davis_test/marks.txt')
-    # marks = read_file_by_json('./common/case_study_drug_Davis_train/marks.txt')
+
     # marks = read_file_by_json('./common/Davis/marks.txt') #氢原子和非氢原子位置；氢原子代表1，非氢原子代表0
-    # marks = read_file_by_json('./common/Human/marks.txt')
-    # marks = read_file_by_json('./common/celegans/marks.txt')
     marks = read_file_by_json('./common/KIBA/marks.txt')
     return [all_smiles, all_smiles_new, all_targets, residues, substructures, skeletons, mols, atoms_idx, marks, druggram, drug_image, tss]
 
@@ -168,10 +93,6 @@ def shuffle_dataset(data):
 
 def load_train_data_DTI(dataset):
     drugs, targets, labels = [], [], []
-    # fpath = './RawData/interaction/case_study_target_Davis/case_study_target_Davis_test/{}.txt'.format(dataset)
-    # fpath = './RawData/interaction/case_study_target_Davis/case_study_target_Davis_train/{}.txt'.format(dataset)
-    # fpath = './RawData/interaction/case_study_drug_Davis/case_study_drug_Davis_train/{}.txt'.format(dataset)
-    # fpath = './RawData/interaction/case_study_drug_Davis/case_study_drug_Davis_test/{}.txt'.format(dataset)
     fpath = './RawData/interaction/{}.txt'.format(dataset)
     train_data = shuffle_dataset(read_file(fpath))
     print("Loading train dataset...")
