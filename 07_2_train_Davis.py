@@ -10,12 +10,7 @@ from dataloader import MyDataset, collate_fn
 from functools import partial
 from torch.utils.data import DataLoader, Subset
 import torch.optim as optim
-# from model_feature import MdDTI #药物文本特征
-# from model_image import MdDTI #药物图像
-# from model_feature_image_Davis import MdDTI #添加药物的图像和文本特征
-# from model_feature_image_Davis_origin import MdDTI #添加药物的图像和文本特征
-# from model import MdDTI #无药物的图像和文本特征
-from model_feature_image_tss_Davis import MdDTI #添加药物的图像和文本特征和靶标二级结构信息
+from model_feature_image_tss_Davis import MdDTI 
 from utils import load_common_data, load_train_data_DTI, get_test_idx
 from evaluate import evaluate_DTI, save_result_DTI, save
 from time import time
