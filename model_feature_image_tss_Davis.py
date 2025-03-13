@@ -952,27 +952,6 @@ class MdDTI(nn.Module):
         # print("drug_feature:", drug_text.shape) # torch.Size([24, 512])
         # print("drug_feature_mask:", drug_text_mask.shape) # torch.Size([24, 512])
 
-        # 添加药物的图像特征
-        # drug_image, drug_image_mask = drug['drug_images'], drug['drug_images_mask']
-        # print("drug_image:", drug_image.shape) # torch.Size([24, 3, 256, 256])
-        # print("drug_image_mask:", drug_image_mask.shape) # torch.Size([24, 3])
-
-
-
-
-        # drug text feature
-        # drug_feature1 = self.feature_model(drug_feature) #torch.Size([16, 256, 256])
-        # print("drug_feature1的shape为：{}".format(drug_feature1.shape))
-        # 添加一个自注意力模块 效果不好
-        # drug_feature1 = self.drug_self_attention_block(drug_feature1) #torch.Size([16, 256, 128])
-        # print("drug_feature1的shape为：{}".format(drug_feature1.shape))
-        # drug_feature1 = self.flat(drug_feature1)
-        # print("drug_feature1:", drug_feature1.shape)
-        # drug_feature1 = self.linear_layer_feature(drug_feature1)
-        # print("drug_feature1:",drug_feature1.shape)
-
-
-
         #添加药物图像信息
         drug_image = drug['drug_images']  # list
         drug_image = torch.stack(drug_image, dim=0)
@@ -1021,16 +1000,6 @@ class MdDTI(nn.Module):
         # drug_text_image = 0.5 * (self.rate1 * drug_text + self.rate2 * drug_image) #效果非常非常差
         # print("drug_text_image:", drug_text_image.shape)  #torch.Size([B, 64])
 
-        # ------------------------------药物图像的嵌入 失败---------------------------------------
-        # drug_image_emb = self.embedding_substructures(drug_image)
-        # print("drug_image_emb:", drug_image_emb.shape)  #
-        # drug_image_feature, drug_image_feature_att = self.Decoder2D(drug_image_emb, drug_image_mask, K, V,
-        #                                                           residues_masks)
-        # print("drug_image_feature:", drug_image_feature.shape) #张量时刻变化
-        # drug_image = 0.5 * (self.ln(torch.amax(drug_image_feature, dim=1)))
-        # print("drug_image:",drug_image.shape)
-        # ----------------------------------------------------------------------------------------
-
         # drug 2d substructure
         #标题3.1 药物的二维子结构进行嵌入
         substructures_emb = self.embedding_substructures(substructures)
@@ -1068,13 +1037,6 @@ class MdDTI(nn.Module):
 
         # 3.4 predict
         target_feature = self.ln(torch.amax(residues_feature, dim=1)) #torch.Size([B, 64])
-        # print("target_feature1:", target_feature.shape)
-        # target_feature = torch.unsqueeze(target_feature, dim=2) #torch.Size([16, 64, 1])
-        # print("target_feature2:", target_feature.shape)
-        # target_feature = self.Target_1D_Convolution(target_feature) #torch.Size([16, 64, 1])
-        # print("target_feature3:", target_feature.shape)
-        # target_feature = torch.squeeze(target_feature, dim=2) #torch.Size([16, 64])
-        # print("target_feature4:", target_feature.shape)
 
         #蛋白质二级结构信息
         target_second_structures_feature = self.ln(torch.amax(target_second_structures_feature, dim=1))  #
@@ -1083,64 +1045,10 @@ class MdDTI(nn.Module):
         #将药物分解后的子结构特征向量与药物的三维结构特征向量相加
         drug_feature = 0.5*(self.ln(torch.amax(substructures_feature, dim=1)) +
                             self.ln(torch.amax(skeletons_feature_3d, dim=1)))
-        # print("drug_feature的shape为：{}".format(drug_feature.shape)) #torch.Size([16, 64])
-        # drug_feature = torch.unsqueeze(drug_feature, dim=2) #torch.Size([16, 64, 1])
-        # drug_feature = self.Drug_1D_Convolution(drug_feature)
-        # drug_feature = torch.squeeze(drug_feature, dim=2)
-        # print("drug_feature1:", drug_feature.shape) #torch.Size([B, 64])
 
-        # 将药物文本特征与药物图像特征相加
-        # 归一化特征
-        # drug_feature = (drug_feature - torch.min(drug_feature)) / (
-        #             torch.max(drug_feature) - torch.min(drug_feature))
-        # image_feature = (image_feature - torch.min(image_feature)) / (
-        #             torch.max(image_feature) - torch.min(image_feature))
-        # drug_feature1 = (drug_feature1 - torch.min(drug_feature1)) / (
-        #             torch.max(drug_feature1) - torch.min(drug_feature1))
-
-        # loss1 = self.drug_text_image_loss(drug_feature1, image_feature)
-
-        # drug_feature = 0.5*(self.rate1 * drug_feature + self.rate2 * image_feature + self.rate3 * drug_feature1)
-        # print("drug_feature:", drug_feature.shape) #torch.Size([16, 64])
+       
         drug_feature = 0.5 * (self.rate1 * drug_feature + self.rate2 * drug_text_image)
         # print("drug_feature2:", drug_feature.shape) #torch.Size([B, 64])
-
-        '''
-        # ------------------------------再利用MCA机制------------------------------------
-
-        drug_feature = torch.unsqueeze(drug_feature, dim=2)  # torch.Size([16, 64, 1])
-        # 这个操作是维度的变换-->torch.Size([16, 64, 64])
-        drug_feature = torch.squeeze(drug_feature, dim=2)  # 去掉维度为1的那个维度
-        drug_feature = drug_feature.unsqueeze(2).repeat(1, 1, 64)  # 在维度2上复制64次
-        # print("drug_feature:", drug_feature.shape)
-
-        target_feature = torch.unsqueeze(target_feature, dim=2)  # torch.Size([16, 64, 1])
-        # 这个操作是维度的变换-->torch.Size([16, 64, 64])
-        target_feature = torch.squeeze(target_feature, dim=2)  # 去掉维度为1的那个维度
-        target_feature = target_feature.unsqueeze(2).repeat(1, 1, 64)  # 在维度2上复制64次
-
-        fusion = self.forward_features_decoder2(drug_feature, target_feature)
-        # print("fusion_emb:",fusion.shape) # torch.Size([16, 2, 64, 64])
-
-        # 特征融合模块
-        decoder_final_feature = self.conv2d(fusion)
-        # print("decoder_final_feature1", decoder_final_feature.shape) # torch.Size([16, 256, 16, 16])
-        decoder_final_feature = decoder_final_feature.reshape(16, 256, -1)
-        # print("decoder_final_feature2", decoder_final_feature.shape) # torch.Size([16, 256, 256])
-        decoder_final_feature = self.conv1d(decoder_final_feature)
-        # print("decoder_final_feature3", decoder_final_feature.shape) # torch.Size([16, 32, 31])
-        out_1 = decoder_final_feature.reshape(16, -1)
-        # print("out_1", out_1.shape) # torch.Size([16, 992])
-        out = self.fc2(out_1)  # 预测模块
-        # print("out", out.shape) # torch.Size([16, 2])
-        # ---------------------------------------------------------------------------------------
-        '''
-        #将靶标的一级序列和二级序列进行融合 效果差
-        # target_feature = self.drug_fusion(target_feature, target_second_structures_feature)
-        # print("target_feature:", target_feature.shape) #torch.Size([16, 128])
-
-        # 这种方式效果一般
-        # drug_target = torch.cat([target_feature, drug_feature, target_second_structures_feature], dim=1)
 
         # 将靶标的一级序列和二级序列进行权重比的相加 效果可以
         target_feature = 0.5 * (self.rate1 * target_feature + self.rate2 * target_second_structures_feature)
