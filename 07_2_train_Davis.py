@@ -193,9 +193,6 @@ if __name__ == '__main__':
 
         '''
         #改进的代码
-        # 从总的数据长度中选取0.1作为测试集 剩余的作为训练集
-        # 然后再从训练集中再选取0.1作为验证集 剩余的作为训练集
-        # 因此 训练集：验证集：测试集 约等于 8：1：1
         train_idx, test_idx = get_test_idx(len(train_data_iter), 0.1, args.batch_size)
         train_dataset_iter = Subset(train_data_iter, train_idx)
         # print("train_dataset_iter: ", len(train_dataset_iter)) # 20608
