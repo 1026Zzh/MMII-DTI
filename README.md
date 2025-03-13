@@ -13,4 +13,4 @@ Drug-target interaction prediction based on multimodal information integration
 06_2_smile_k_gram.py：对药物的SMILES序列进行映射
 07_2_train_Davis.py：main函数
 
-各位学者，欢迎讨论，邮箱：zonghaoo@163.com
+各位学者，如有不足之处，欢迎讨论。邮箱：zonghaoo@163.com
