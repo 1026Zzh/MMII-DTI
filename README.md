@@ -12,5 +12,6 @@ Drug-target interaction prediction based on multimodal information integration
 06_1_smile_to_features.py：将SMILES化学结构字符串转换为分子的特征信息，并将这些特征信息保存到文件中。
 06_2_smile_k_gram.py：对药物的SMILES序列进行映射。
 07_2_train_Davis.py：main函数。
+Davis:Davis数据集
 
 各位学者，如有不足之处，欢迎讨论。邮箱：zonghaoo@163.com
